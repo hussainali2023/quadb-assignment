@@ -1,23 +1,38 @@
 import logo from './logo.svg';
 import './App.css';
 
+import {  RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
+import CardDetails from './components/CardDetails/CardDetails';
+import BookingTicket from './components/BookingTicket/BookingTicket';
+import Card from './components/Card/Card';
+
+
 function App() {
+  const Router = createBrowserRouter([
+    {
+      path:'/',
+      element:<Card/>
+    },
+    {
+      path:'/card-details/:id',
+      element: <CardDetails/>,
+      loader: ({params}) =>{
+       return fetch(`https://api.tvmaze.com/shows/${params.id}`)
+      } 
+    },
+    {
+      path:'/book-ticket/:id',
+      element: <BookingTicket/>,
+      loader: ({params}) =>{
+       return fetch(`https://api.tvmaze.com/shows/${params.id}`)
+      } 
+    }
+  ])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+    <RouterProvider router={Router}/>
+    <Toaster/>
     </div>
   );
 }
